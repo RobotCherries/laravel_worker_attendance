@@ -2,14 +2,14 @@
 
 namespace App;
 
+use App\Notifications\ManagerResetPassword;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class Manager extends Authenticatable
 {
     use Notifiable;
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'manager_id';
 
     /**
      * The attributes that are mass assignable.
@@ -28,4 +28,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ManagerResetPassword($token));
+    }
 }

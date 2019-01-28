@@ -39,6 +39,12 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapAdminRoutes();
+
+        $this->mapManagerRoutes();
+
+        $this->mapWorkerRoutes();
+
         //
     }
 
@@ -69,5 +75,50 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "admin" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapAdminRoutes()
+    {
+        Route::prefix('admin')
+             ->middleware('admin')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/admin.php'));
+    }
+
+    /**
+     * Define the "manager" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapManagerRoutes()
+    {
+        Route::prefix('manager')
+             ->middleware('manager')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/manager.php'));
+    }
+
+    /**
+     * Define the "admin" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapWorkerRoutes()
+    {
+        Route::prefix('worker')
+             ->middleware('worker')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/worker.php'));
     }
 }
