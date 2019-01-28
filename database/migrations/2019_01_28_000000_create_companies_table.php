@@ -25,7 +25,7 @@ class CreateCompaniesTable extends Migration
             $table->increments('company_id');
             $table->string('company_name', 45);
             $table->string('company_tag', 10);
-            $table->timestampTz();
+            $table->timestampsTz();
             $table->softDeletes();
             
             $table->unique(["company_name"], 'company_name_UNIQUE');

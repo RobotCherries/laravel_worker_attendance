@@ -26,7 +26,7 @@ class CreateFunctionsTable extends Migration
             $table->string('function_name', 45);
             $table->unsignedInteger('department_id');
             $table->unsignedInteger('company_id');
-            $table->timestampTz();
+            $table->timestampsTz();
             $table->softDeletes();
 
             $table->index(["department_id"], 'functions_fk_department_id_idx');

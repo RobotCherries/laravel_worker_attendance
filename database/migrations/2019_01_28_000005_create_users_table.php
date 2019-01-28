@@ -36,7 +36,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('function_id');
             $table->unsignedInteger('department_id');
             $table->unsignedInteger('company_id');
-            $table->timestampTz();
+            $table->timestampsTz();
             $table->softDeletes();
 
             

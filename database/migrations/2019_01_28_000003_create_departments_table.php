@@ -25,7 +25,7 @@ class CreateDepartmentsTable extends Migration
             $table->increments('department_id');
             $table->string('department_name', 45);
             $table->unsignedInteger('company_id');
-            $table->timestampTz();
+            $table->timestampsTz();
             $table->softDeletes();
             
             $table->index(["company_id"], 'departments_fk_company_id_idx');

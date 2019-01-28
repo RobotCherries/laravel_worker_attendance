@@ -34,7 +34,7 @@ class CreateAttendancesTable extends Migration
             $table->unsignedInteger('function_id');
             $table->unsignedInteger('department_id');
             $table->unsignedInteger('company_id');
-            $table->timestampTz();
+            $table->timestampsTz();
             $table->softDeletes();
             
             $table->index(["attendance_type_id"], 'attendances_fk_attendance_type_id_idx');
