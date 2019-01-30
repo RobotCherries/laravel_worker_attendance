@@ -7,12 +7,6 @@ use Illuminate\Database\Migrations\Migration;
 class CreateFunctionsTable extends Migration
 {
     /**
-     * Schema table name to migrate
-     * @var string
-     */
-    public $tableName = 'functions';
-
-    /**
      * Run the migrations.
      * @table functions
      *
@@ -20,28 +14,22 @@ class CreateFunctionsTable extends Migration
      */
     public function up()
     {
-        Schema::create($this->tableName, function (Blueprint $table) {
+        Schema::create('functions', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('function_id');
-            $table->string('function_name', 45);
-            $table->unsignedInteger('department_id');
-            $table->unsignedInteger('company_id');
+            
+            // Indexes
+            $table->unsignedInteger('department_id')->index();
+
+            $table->string('function_name', 45)->collation('utf8_unicode_ci');
             $table->timestampsTz();
             $table->softDeletes();
-
-            $table->index(["department_id"], 'functions_fk_department_id_idx');
-
-            $table->index(["company_id"], 'functions_fk_company_id_idx');
-
-            $table->unique(["function_id"], 'function_id_UNIQUE');
-
-            $table->unique(["function_name"], 'function_name_UNIQUE');
-
-
-            $table->foreign('department_id', 'functions_fk_department_id_idx')
-                ->references('department_id')->on('departments')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+            
+            // Foreign Keys
+            $table->foreign('department_id', 'functions_fk_department_id')
+                  ->references('department_id')->on('departments')
+                  ->onDelete('restrict')
+                  ->onUpdate('restrict');
         });
     }
 
@@ -52,6 +40,6 @@ class CreateFunctionsTable extends Migration
      */
      public function down()
      {
-       Schema::dropIfExists($this->tableName);
+       Schema::dropIfExists('functions');
      }
 }

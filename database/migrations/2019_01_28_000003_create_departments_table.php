@@ -7,12 +7,6 @@ use Illuminate\Database\Migrations\Migration;
 class CreateDepartmentsTable extends Migration
 {
     /**
-     * Schema table name to migrate
-     * @var string
-     */
-    public $tableName = 'departments';
-
-    /**
      * Run the migrations.
      * @table departments
      *
@@ -20,25 +14,13 @@ class CreateDepartmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create($this->tableName, function (Blueprint $table) {
+        Schema::create('departments', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('department_id');
-            $table->string('department_name', 45);
-            $table->unsignedInteger('company_id');
+            
+            $table->string('department_name', 45)->unique()->collation('utf8_unicode_ci');
             $table->timestampsTz();
             $table->softDeletes();
-            
-            $table->index(["company_id"], 'departments_fk_company_id_idx');
-
-            $table->unique(["department_id"], 'id_department_UNIQUE');
-
-            $table->unique(["department_name"], 'department_name_UNIQUE');
-
-
-            $table->foreign('company_id', 'departments_fk_company_id_idx')
-                ->references('company_id')->on('companies')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
         });
     }
 
@@ -49,6 +31,6 @@ class CreateDepartmentsTable extends Migration
      */
      public function down()
      {
-       Schema::dropIfExists($this->tableName);
+       Schema::dropIfExists('departments');
      }
 }

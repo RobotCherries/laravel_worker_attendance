@@ -4,21 +4,22 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserRolesTable extends Migration
+class CreateClockingTypesTable extends Migration
 {
     /**
      * Run the migrations.
-     * @table user_roles
+     * @table clocking_types
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('user_roles', function (Blueprint $table) {
+        Schema::create('clocking_types', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('user_role_id');
+            $table->increments('clocking_type_id');
             
-            $table->string('user_role', 32)->collation('utf8_unicode_ci');
+            $table->string('clocking_type_tag', 10)->unique()->collation('utf8_unicode_ci');
+            $table->string('clocking_type', 45)->unique()->collation('utf8_unicode_ci');
             $table->timestampsTz();
             $table->softDeletes();
         });
@@ -31,6 +32,6 @@ class CreateUserRolesTable extends Migration
      */
      public function down()
      {
-       Schema::dropIfExists('user_roles');
+       Schema::dropIfExists('clocking_types');
      }
 }
