@@ -84,9 +84,38 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <div class="container">
+            <div class="row py-4" id="body-row">
+                <!-- Sidebar -->
+                <div id="sidebar-container" class="d-none d-md-block col-md-3 col-lg-2">
+                    <!-- Bootstrap List Group -->
+                    <ul class="list-group sticky-top sticky-offset">
+                        <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center">
+                            <small>MAIN MENU</small>
+                        </li>
+                        <a href="{{ route('panel_index') }}" class="list-group-item">{{ __('Sumar') }}</a>
+                        <a href="{{ route('panel_users') }}" class="list-group-item">{{ __('Muncitori') }}</a>
+                        <a href="{{ route('panel_users_create') }}" class="list-group-item">{{ __('Adaugă muncitor') }}</a>
+                        <li class="list-group-item sidebar-separator"></li>
+                        <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center">
+                            <small>ACTIONS</small>
+                        </li>
+                        <a href="#" class="list-group-item list-group-item-action p-2 d-flex justify-content-center">
+                            <button class="btn btn-primary">Descarcă Excel</button>
+                        </a>
+                        <li class="list-group-item sidebar-separator"></li>
+                    </ul>
+                    <!-- List Group END-->
+                </div>
+                <!-- sidebar-container END -->
+            
+                <div class="col">
+                    <main class="">
+                        @yield('content')
+                    </main>
+                </div>
+            </div> <!-- body-row END -->
+        </div>
     </div>
 </body>
 </html>

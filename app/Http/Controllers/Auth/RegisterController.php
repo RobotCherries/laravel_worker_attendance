@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/acasa';
 
     /**
      * Create a new controller instance.
@@ -41,6 +42,24 @@ class RegisterController extends Controller
     }
 
     /**
+     * Send data to form for user to choose from.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        $departments = DB::table('departments')->get();
+
+        $functions = DB::table('functions')
+                        ->join('departments', 'functions.department_id', '=', 'departments.department_id')
+                        ->select('functions.*', 'departments.department_id', 'departments.department_name')
+                        ->get();
+
+        return view('auth.register')->with('departments', $departments)->with('functions', $functions);
+    }
+
+
+    /**
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
@@ -49,9 +68,19 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'user_role_id' => 'required|boolean',
+            'department_id' => 'required|boolean',
+            'function_id' => 'required|boolean',
+
+            'first_name' => 'required|max:45',
+            'middle_name' => 'nullable|max:45',
+            'last_name' => 'required|max:45',
+
+            'email' => 'required|email|max:128|unique:users',
+            'password' => 'required|min:8|confirmed',
+            
+            'date_hired' => 'nullable|date',
+            'active' => 'required|boolean',
         ]);
     }
 
@@ -64,9 +93,19 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'company_id' => isset($data['company_id']),
+            'department_id' => isset($data['department_id']),
+            'function_id' => isset($data['function_id']),
+
+            'first_name' => $data['first_name'],
+            'middle_name' => $data['middle_name'],
+            'last_name' => $data['last_name'],
+
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => bcrypt($data['password']),
+
+            'date_hired' => isset($data['date_hired']),
+            'active' => $data['1'],
         ]);
     }
 }

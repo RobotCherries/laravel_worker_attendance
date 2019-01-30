@@ -17,4 +17,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/acasa', 'HomeController@index')->name('home');
+
+Route::get('/instructiuni', 'InstructionsController@index')->name('instructions');
+
+Route::get('/pontare', 'ClockingController@index')->name('clocking');
+
+Route::prefix('panou')->group(function () {
+    Route::get('/', 'DashboardController@index')->name('panel_index');
+    Route::get('/muncitori', 'UsersController@index')->name('panel_users');
+    Route::get('/muncitori/adauga', 'UsersController@create')->name('panel_users_create');
+    Route::get('/muncitori/{id}', 'UsersController@show')->name('panel_users_show');
+});
+
+Route::get('/setari', 'SettingsController@index')->name('settings');
