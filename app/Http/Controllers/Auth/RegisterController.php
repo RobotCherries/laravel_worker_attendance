@@ -48,14 +48,13 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
+        $user_roles = DB::table('user_roles')->get();
         $departments = DB::table('departments')->get();
+        $functions = DB::table('functions')->get();
 
-        $functions = DB::table('functions')
-                        ->join('departments', 'functions.department_id', '=', 'departments.department_id')
-                        ->select('functions.*', 'departments.department_id', 'departments.department_name')
-                        ->get();
-
-        return view('auth.register')->with('departments', $departments)->with('functions', $functions);
+        return view('auth.register')->with('user_roles', $user_roles)
+                                    ->with('departments', $departments)
+                                    ->with('functions', $functions);
     }
 
 

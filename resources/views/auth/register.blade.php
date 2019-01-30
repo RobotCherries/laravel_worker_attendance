@@ -11,15 +11,36 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
+                        {{-- User role --}}
+                        <div class="form-group{{ $errors->has('user_role') ? ' has-error' : '' }}">
+                            <label for="user_role" class="col-md-4 control-label">Rol utilizator *</label>
+
+                            <div class="col-md-4">
+                                <select id="user_role" name="user_role" class="custom-select custom-select-lg mb-3">
+                                    @foreach ($user_roles as $user_role)
+                                        <option value="{{ $user_role->user_role_id }}">
+                                            {{ $user_role->user_role_id }} - {{ $user_role->user_role }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @if ($errors->has('department'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('department') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         {{-- Department --}}
                         <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
-                            <label for="department" class="col-md-4 control-label">Department</label>
+                            <label for="department" class="col-md-4 control-label">Departament *</label>
 
                             <div class="col-md-4">
                                 <select id="department" name="department" class="custom-select custom-select-lg mb-3">
-                                    @foreach ($functions as $function)
-                                        <option value="{{ $function->department_id }}">
-                                            {{ $function->department_id }} - {{ $function->department_name }}
+                                    @foreach ($departments as $department)
+                                        <option value="{{ $department->department_id }}">
+                                            {{ $department->department_id }} - {{ $department->department_name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -34,7 +55,7 @@
 
                         {{-- Function --}}
                         <div class="form-group{{ $errors->has('function') ? ' has-error' : '' }}">
-                            <label for="function" class="col-md-4 control-label">Function</label>
+                            <label for="function" class="col-md-4 control-label">Functie *</label>
 
                             <div class="col-md-6">
                                 <select id="function" name="function" class="custom-select custom-select-lg mb-3">
@@ -55,7 +76,7 @@
 
                         {{-- First name --}}
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                            <label for="first_name" class="col-md-4 control-label">First name</label>
+                            <label for="first_name" class="col-md-4 control-label">Prenume *</label>
 
                             <div class="col-md-6">
                                 <input id="first_name" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" autofocus>
@@ -72,7 +93,7 @@
 
                         {{-- Middle name --}}
                         <div class="form-group{{ $errors->has('middle_name') ? ' has-error' : '' }}">
-                            <label for="middle_name" class="col-md-4 control-label">Middle name</label>
+                            <label for="middle_name" class="col-md-4 control-label">Nume mijlociu</label>
 
                             <div class="col-md-6">
                                 <input id="middle_name" type="text" class="form-control" name="middle_name" value="{{ old('middle_name') }}" placeholder="Optional" autofocus>
@@ -87,7 +108,7 @@
 
                         {{-- Last name --}}
                         <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-                            <label for="last_name" class="col-md-4 control-label">Last name</label>
+                            <label for="last_name" class="col-md-4 control-label">Nume *</label>
 
                             <div class="col-md-6">
                                 <input id="last_name" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" autofocus>
@@ -102,10 +123,10 @@
 
                         {{-- Date hired --}}
                         <div class="form-group{{ $errors->has('date_hired') ? ' has-error' : '' }}">
-                            <label for="date_hired" class="col-md-4 control-label">Date hired</label>
+                            <label for="date_hired" class="col-md-4 control-label">Data angajare</label>
 
                             <div class="col-md-6">
-                                <input id="date_hired" type="date" class="form-control" name="date_hired" disabled>
+                                <input id="date_hired" type="date" class="form-control" name="date_hired"  disabled>
 
                                 @if ($errors->has('date_hired'))
                                     <span class="help-block">
@@ -132,7 +153,7 @@
 
                         {{-- Password --}}
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
+                            <label for="password" class="col-md-4 control-label">Parola *</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control" name="password">
@@ -147,7 +168,7 @@
 
                         {{-- Password confirmation --}}
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+                            <label for="password-confirm" class="col-md-4 control-label">Confirmare parola *</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
