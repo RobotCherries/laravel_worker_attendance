@@ -19,18 +19,42 @@
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Full name</th>
-                            <th scope="col">Department</th>
-                            <th scope="col">Function</th>
+                            <th scope="col">Nume întreg</th>
+                            <th scope="col">Departament</th>
+                            <th scope="col">Funcție</th>
+                            <th scope="col" colspan="3">Actiuni</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach ($users as $user)
                     <tr>
-                        <th><a href="{{ route('panel_users_show', $user->user_id) }}">{{ $user->user_id }}</a></th>
-                        <td><a href="{{ route('panel_users_show', $user->user_id) }}">{{ $user->first_name }} {{ $user->last_name }}</a></td>
+                        <td>
+                            <a href="{{ route('panel_users_show', $user->user_id) }}">
+                                {{ $user->user_id }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('panel_users_show', $user->user_id) }}">
+                                {{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}
+                            </a>
+                        </td>
                         <td>{{ $user->department_name }}</td>
                         <td>{{ $user->function_name }}</td>
+                        <td>
+                            <a href="#" class="btn btn-small btn-warning">
+                                <i class="far fa-calendar-check"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-small btn-warning">
+                                <i class="fas fa-user-edit"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-small btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
                     </tr>
                     @endforeach
                     </tbody>
