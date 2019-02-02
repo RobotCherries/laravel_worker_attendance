@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
+use App\User_roles;
+use App\Departments;
+use App\Functions;
 
 class RegisterController extends Controller
 {
@@ -48,13 +51,22 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        $user_roles = DB::table('user_roles')->get();
-        $departments = DB::table('departments')->get();
-        $functions = DB::table('functions')->get();
+        $user_roles = User_roles::all();
+        $departments = Departments::all();
+        
+        return view('auth.register', compact('user_roles', 'departments'));
+    }
 
-        return view('auth.register')->with('user_roles', $user_roles)
-                                    ->with('departments', $departments)
-                                    ->with('functions', $functions);
+    /**
+     * Get the selected department's id for the registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getFunctions($id)
+    {
+        $functions = DB::table('functions')->where('department_id', $id)->pluck('function_name', 'function_id');
+   
+        return json_encode($functions);
     }
 
 

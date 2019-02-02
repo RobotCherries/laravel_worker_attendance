@@ -12,11 +12,11 @@
                         @csrf
 
                         {{-- User role --}}
-                        <div class="form-group{{ $errors->has('user_role') ? ' has-error' : '' }}">
-                            <label for="user_role" class="col-md-4 control-label">Rol utilizator *</label>
+                        <div class="form-group{{ $errors->has('user_role_id') ? ' has-error' : '' }}">
+                            <label for="user_role_id" class="col-md-4 control-label">Rol utilizator *</label>
 
                             <div class="col-md-4">
-                                <select id="user_role" name="user_role" class="custom-select custom-select-lg mb-3">
+                                <select id="js-user-role-id" name="user_role_id" class="custom-select custom-select-lg mb-3">
                                     @foreach ($user_roles as $user_role)
                                         <option value="{{ $user_role->user_role_id }}">
                                             {{ $user_role->user_role_id }} - {{ $user_role->user_role }}
@@ -24,20 +24,23 @@
                                     @endforeach
                                 </select>
 
-                                @if ($errors->has('department'))
+                                @if ($errors->has('user_role_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('department') }}</strong>
+                                        <strong>{{ $errors->first('user_role_id') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         {{-- Department --}}
-                        <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
-                            <label for="department" class="col-md-4 control-label">Departament *</label>
+                        <div class="form-group{{ $errors->has('department_id') ? ' has-error' : '' }}">
+                            <label for="department_id" class="col-md-4 control-label">Departament *</label>
 
                             <div class="col-md-4">
-                                <select id="department" name="department" class="custom-select custom-select-lg mb-3">
+                                <select id="js-department-id" name="department_id" class="custom-select custom-select-lg mb-3">
+                                    <option value="0">
+                                        Alege departamentul
+                                    </option>
                                     @foreach ($departments as $department)
                                         <option value="{{ $department->department_id }}">
                                             {{ $department->department_id }} - {{ $department->department_name }}
@@ -45,30 +48,26 @@
                                     @endforeach
                                 </select>
 
-                                @if ($errors->has('department'))
+                                @if ($errors->has('department_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('department') }}</strong>
+                                        <strong>{{ $errors->first('department_id') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         {{-- Function --}}
-                        <div class="form-group{{ $errors->has('function') ? ' has-error' : '' }}">
-                            <label for="function" class="col-md-4 control-label">Functie *</label>
+                        <div class="form-group{{ $errors->has('function_id') ? ' has-error' : '' }}">
+                            <label for="function_id" class="col-md-4 control-label">Functie *</label>
 
                             <div class="col-md-6">
-                                <select id="function" name="function" class="custom-select custom-select-lg mb-3">
-                                    @foreach ($functions as $function)
-                                        <option value="{{ $function->function_id }}">
-                                            {{ $function->department_id }} - {{ $function->function_name }}
-                                        </option>
-                                    @endforeach
+                                <select id="js-function-id" name="function_id" class="custom-select custom-select-lg mb-3">
+                                        <option value="0">Alege funcția</option>
                                 </select>
 
-                                @if ($errors->has('function'))
+                                @if ($errors->has('function_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('function') }}</strong>
+                                        <strong>{{ $errors->first('function_id') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -79,7 +78,7 @@
                             <label for="first_name" class="col-md-4 control-label">Prenume *</label>
 
                             <div class="col-md-6">
-                                <input id="first_name" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" autofocus>
+                                <input id="js-first-name" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" autofocus>
 
                                 @if ($errors->has('first_name'))
                                     <span class="help-block">
@@ -96,7 +95,7 @@
                             <label for="middle_name" class="col-md-4 control-label">Nume mijlociu</label>
 
                             <div class="col-md-6">
-                                <input id="middle_name" type="text" class="form-control" name="middle_name" value="{{ old('middle_name') }}" placeholder="Optional" autofocus>
+                                <input id="js-middle-name" type="text" class="form-control" name="middle_name" value="{{ old('middle_name') }}" placeholder="Optional" autofocus>
 
                                 @if ($errors->has('middle_name'))
                                     <span class="help-block">
@@ -111,7 +110,7 @@
                             <label for="last_name" class="col-md-4 control-label">Nume *</label>
 
                             <div class="col-md-6">
-                                <input id="last_name" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" autofocus>
+                                <input id="js-last-name" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" autofocus>
 
                                 @if ($errors->has('last_name'))
                                     <span class="help-block">
@@ -126,7 +125,7 @@
                             <label for="date_hired" class="col-md-4 control-label">Data angajare</label>
 
                             <div class="col-md-6">
-                                <input id="date_hired" type="date" class="form-control" name="date_hired"  disabled>
+                                <input id="js-date-hired" type="date" class="form-control" name="date_hired"  disabled>
 
                                 @if ($errors->has('date_hired'))
                                     <span class="help-block">
@@ -141,7 +140,7 @@
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
+                                <input id="js-email" type="email" class="form-control" name="email" value="{{ old('email') }}">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -156,7 +155,7 @@
                             <label for="password" class="col-md-4 control-label">Parola *</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password">
+                                <input id="js-password" type="password" class="form-control" name="password">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -168,10 +167,10 @@
 
                         {{-- Password confirmation --}}
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirmare parola *</label>
+                            <label for="password_confirmation" class="col-md-4 control-label">Confirmare parola *</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+                                <input id="js-password-confirmation" type="password" class="form-control" name="password_confirmation">
 
                                 @if ($errors->has('password_confirmation'))
                                     <span class="help-block">

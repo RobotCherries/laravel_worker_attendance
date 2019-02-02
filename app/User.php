@@ -27,4 +27,28 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get the roles that the user can have.
+     */
+    public function user_role()
+    {
+        return $this->hasMany('App\Departments');
+    }
+
+    /**
+     * Get the departments that the user can have.
+     */
+    public function user_department()
+    {
+        return $this->hasMany('App\Departments');
+    }
+
+    /**
+     * Get the functionss that the user can have.
+     */
+    public function user_function()
+    {
+        return $this->hasMany('App\Functions');
+    }
 }
