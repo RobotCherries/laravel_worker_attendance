@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class User_roles extends Model
 {
+    protected $primaryKey = 'user_role_id';
     protected $table = 'user_roles';
 
     /**

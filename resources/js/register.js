@@ -1,5 +1,6 @@
 window.onload = function() {
-    console.log('connected');
+
+    // Functions dropdown - dependend on department
     $('select[name="department_id"]').on('change', function(){
         var departmentId = $(this).val();
         if(departmentId) {
@@ -17,7 +18,7 @@ window.onload = function() {
 
                     $.each(data, function(key, value){
 
-                        $('select[name="function_id"]').append('<option value="'+ key +'">' + value + '</option>');
+                        $('select[name="function_id"]').append(`<option value=${key}>${key} - ${value}</option>`);
 
                     });
                 },
@@ -28,6 +29,9 @@ window.onload = function() {
         } else {
             $('select[name="function_id"]').empty();
         }
-
     });
+
+    // Date hired - date picker
+    // console.log('connected');
+    // $('input[name="date_hired"]').datepicker();
 }

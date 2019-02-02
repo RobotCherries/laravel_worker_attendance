@@ -30,10 +30,10 @@ class UsersController extends Controller
     public function index()
     {
         $users = DB::table('users')
-        ->join('departments', 'users.id_department', '=', 'departments.id_department')
-        ->join('functions', 'users.id_function', '=', 'functions.id_function')
+        ->join('departments', 'users.department_id', '=', 'departments.department_id')
+        ->join('functions', 'users.function_id', '=', 'functions.function_id')
         ->select('users.*', 'departments.department_name', 'functions.function_name')
-        ->simplePaginate(4);
+        ->simplePaginate(6);
 
         return view('dashboard.users.index', ['users' => $users]);
     }

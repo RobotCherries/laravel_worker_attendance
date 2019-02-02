@@ -79,16 +79,16 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'user_role_id' => 'required|boolean',
-            'department_id' => 'required|boolean',
-            'function_id' => 'required|boolean',
+            'user_role_id' => 'required|numeric',
+            'department_id' => 'required|numeric',
+            'function_id' => 'required|numeric',
 
             'first_name' => 'required|max:45',
             'middle_name' => 'nullable|max:45',
             'last_name' => 'required|max:45',
 
             'email' => 'required|email|max:128|unique:users',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:6|confirmed',
             
             'date_hired' => 'nullable|date',
             'active' => 'required|boolean',
@@ -104,7 +104,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'company_id' => isset($data['company_id']),
+            'user_role_id' => isset($data['user_role_id']),
             'department_id' => isset($data['department_id']),
             'function_id' => isset($data['function_id']),
 
@@ -116,7 +116,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
 
             'date_hired' => isset($data['date_hired']),
-            'active' => $data['1'],
+            'active' => $data['active'],
         ]);
     }
 }

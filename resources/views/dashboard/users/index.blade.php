@@ -27,8 +27,8 @@
                     <tbody>
                     @foreach ($users as $user)
                     <tr>
-                        <th><a href="{{ route('panel_users_show', $user->id_user) }}">{{ $user->id_user }}</a></th>
-                        <td><a href="{{ route('panel_users_show', $user->id_user) }}">{{ $user->first_name }} {{ $user->last_name }}</a></td>
+                        <th><a href="{{ route('panel_users_show', $user->user_id) }}">{{ $user->user_id }}</a></th>
+                        <td><a href="{{ route('panel_users_show', $user->user_id) }}">{{ $user->first_name }} {{ $user->last_name }}</a></td>
                         <td>{{ $user->department_name }}</td>
                         <td>{{ $user->function_name }}</td>
                     </tr>

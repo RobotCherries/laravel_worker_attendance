@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Functions extends Model
 {
+    protected $primaryKey = 'function_id';
     protected $table = 'functions';
 
     /**

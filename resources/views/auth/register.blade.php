@@ -17,6 +17,9 @@
 
                             <div class="col-md-4">
                                 <select id="js-user-role-id" name="user_role_id" class="custom-select custom-select-lg mb-3">
+                                    <option value="0">
+                                        Alege rolul de utilizator
+                                    </option>
                                     @foreach ($user_roles as $user_role)
                                         <option value="{{ $user_role->user_role_id }}">
                                             {{ $user_role->user_role_id }} - {{ $user_role->user_role }}
@@ -125,11 +128,26 @@
                             <label for="date_hired" class="col-md-4 control-label">Data angajare</label>
 
                             <div class="col-md-6">
-                                <input id="js-date-hired" type="date" class="form-control" name="date_hired"  disabled>
+                                <input id="js-date-hired" type="text" class="form-control" name="date_hired" value="2019-01-01" disabled>
 
                                 @if ($errors->has('date_hired'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('date_hired') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- Is user active --}}
+                        <div class="form-group{{ $errors->has('active') ? ' has-error' : '' }}">
+                            {{-- <label for="active" class="col-md-4 control-label">User activ</label> --}}
+
+                            <div class="col-md-6">
+                                <input id="js-active" type="hidden" class="form-control" name="active" value="1">
+
+                                @if ($errors->has('active'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('active') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -179,6 +197,14 @@
                                 @endif
                             </div>
                         </div>
+
+                        @if ($errors->any())    
+                            <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                            </ul>
+                        @endif
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
