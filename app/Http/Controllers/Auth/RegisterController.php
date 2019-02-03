@@ -51,8 +51,8 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        $user_roles = User_roles::all();
-        $departments = Departments::all();
+        $user_roles = User_roles::all()->pluck('user_role', 'user_role_id');
+        $departments = Departments::all()->pluck('department_name', 'department_id');
         
         return view('auth.register', compact('user_roles', 'departments'));
     }
@@ -115,7 +115,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
 
-            'date_hired' => isset($data['date_hired']),
+            'date_hired' => $data['date_hired'],
             'active' => $data['active'],
         ]);
     }

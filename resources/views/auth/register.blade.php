@@ -8,212 +8,106 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+                    <!-- if there are creation errors, they will show here -->
+                    {{ Html::ul($errors->all()) }}
 
-                        {{-- User role --}}
-                        <div class="form-group{{ $errors->has('user_role') ? ' has-error' : '' }}">
-                            <label for="user_role" class="col-md-4 control-label">Rol utilizator *</label>
+                    {{ Form::open(array('route' => array('register'))) }}
 
-                            <div class="col-md-4">
-                                <select id="js-user-role-id" name="user_role" class="custom-select custom-select-lg mb-3">
-                                    <option value="0">
-                                        Alege rolul de utilizator
-                                    </option>
-                                    @foreach ($user_roles as $user_role)
-                                        <option value="{{ $user_role->user_role_id }}">
-                                            {{ $user_role->user_role_id }} - {{ $user_role->user_role }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @if ($errors->has('user_role'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('user_role') }}</strong>
-                                    </span>
-                                @endif
+                    <div class="form-group">
+                        <h4 class="mt-4">Nume angajat</h4>
+                        <hr class="mt-0 mb-4">
+                        <div class="row">
+                            {{-- First name --}}
+                            <div class="col">
+                                {{ Form::label('first_name', 'Prenume *', ['class' => 'control-label']) }}
+                                {{ Form::text('first_name', null, ['id' => 'js-first-name', 'class' => 'form-control', 'autofocus', 'required']) }}
+                            </div>
+                            {{-- Middle name --}}
+                            <div class="col">
+                                {{ Form::label('middle_name', 'Nume mijlociu', ['class' => 'control-label']) }}
+                                {{ Form::text('middle_name', null, ['id' => 'js-middle-name', 'class' => 'form-control', 'autofocus', 'placeholder' => 'Optional']) }}
+                            </div>
+                            {{-- Last name --}}
+                            <div class="col">
+                                {{ Form::label('last_name', 'Nume *', ['class' => 'control-label']) }}
+                                {{ Form::text('last_name', null, ['id' => 'js-last-name', 'class' => 'form-control', 'autofocus', 'required']) }}
                             </div>
                         </div>
+                    </div>
+                    
+                    <h4 class="mt-5">Date companie</h4>
+                    <hr class="mt-0 mb-4">
 
-                        {{-- Department --}}
-                        <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
-                            <label for="department" class="col-md-4 control-label">Departament *</label>
-
-                            <div class="col-md-4">
-                                <select id="js-department-id" name="department" class="custom-select custom-select-lg mb-3">
-                                    <option value="0">
-                                        Alege departamentul
-                                    </option>
-                                    @foreach ($departments as $department)
-                                        <option value="{{ $department->department_id }}">
-                                            {{ $department->department_id }} - {{ $department->department_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @if ($errors->has('department'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('department') }}</strong>
-                                    </span>
-                                @endif
+                    <div class="form-group">
+                        <div class="row">
+                            {{-- Department--}}
+                            <div class="col">
+                                {{ Form::label('department', 'Departament *', ['class' => 'control-label']) }}
+                                {{ Form::select('department', array('0' => 'Alege un departament') + $departments->toArray(), null, ['id' => 'js-department', 'class' => 'custom-select', 'autofocus', 'required']) }}
+                            </div>
+                            {{-- Function--}}
+                            <div class="col">
+                                {{ Form::label('function', 'Funcție *', ['class' => 'control-label']) }}
+                                {{ Form::select('function', ['0' => 'Alege o funcție'], '0', ['id' => 'js-function', 'class' => 'custom-select', 'autofocus', 'required']) }}
                             </div>
                         </div>
+                    </div>
 
-                        {{-- Function --}}
-                        <div class="form-group{{ $errors->has('function') ? ' has-error' : '' }}">
-                            <label for="function" class="col-md-4 control-label">Functie *</label>
+                    <h4 class="mt-5">Date cont</h4>
+                    <hr class="mt-0 mb-4">
 
-                            <div class="col-md-6">
-                                <select id="js-function-id" name="function" class="custom-select custom-select-lg mb-3">
-                                        <option value="0">Alege funcția</option>
-                                </select>
-
-                                @if ($errors->has('function'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('function') }}</strong>
-                                    </span>
-                                @endif
+                    <div class="form-group">
+                        <div class="row">
+                            {{-- Email --}}
+                            <div class="col">
+                                {{ Form::label('email', 'Adresă de email *', ['class' => 'control-label']) }}
+                                {{ Form::email('email', null, ['class' => 'js-email form-control', 'autofocus', 'required', 'placeholder' => 'nume@exemplu.ro']) }}
+                            </div>
+                            {{-- Password --}}
+                            <div class="col">
+                                {{ Form::label('password', 'Parolă *', ['class' => 'control-label']) }}
+                                {{ Form::password('password', ['class' => 'form-control', 'autofocus', 'required']) }}
+                            </div>
+                            {{-- Password confirmation --}}
+                            <div class="col">
+                                {{ Form::label('password_confirmation', 'Parolă *', ['class' => 'control-label']) }}
+                                {{ Form::password('password_confirmation', ['class' => 'form-control', 'autofocus', 'required']) }}
                             </div>
                         </div>
+                    </div>
 
-                        {{-- First name --}}
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                            <label for="first_name" class="col-md-4 control-label">Prenume *</label>
+                    <h4 class="mt-5">Alte</h4>
+                    <hr class="mt-0 mb-4">
 
-                            <div class="col-md-6">
-                                <input id="js-first-name" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" autofocus>
-
-                                @if ($errors->has('first_name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('first_name') }}</strong>
-                                    </span>
-                                @endif
+                    <div class="form-group">
+                        <div class="row">
+                            {{-- User role --}}
+                            <div class="col">
+                                {{ Form::label('user_role', 'Rol utilizator', ['class' => 'control-label']) }}
+                                {{ Form::select('user_role', array('0' => 'Alege un rol') + $user_roles->toArray(), null, ['class' => 'custom-select', 'autofocus', 'required']) }}
+                            </div>
+                            {{-- Date hired --}}
+                            <div class="col">
+                                {{ Form::label('date_hired', 'Dată angajare', ['class' => 'control-label']) }}
+                                {{ Form::date('date_hired', \Carbon\Carbon::createFromFormat('Y-m-d', '2019-01-01'), ['class' => 'form-control', 'required']) }}
+                            </div>
+                            {{-- Active --}}
+                            <div class="col-auto mr-3">
+                                {{ Form::label(null, 'Angajat activ', ['class' => 'control-label']) }}
+                                <div class="custom-control custom-switch mt-1 mr-sm-2">
+                                    {{ Form::hidden('active', '0', false, ['id' => 'active', 'class' => 'custom-control-input']) }}
+                                    {{ Form::checkbox('active', '1', true, ['id' => 'active', 'class' => 'custom-control-input']) }}
+                                    {{ Form::label('active', 'Da', ['class' => 'custom-control-label']) }}
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                    <div class="form-group text-center mt-5">
+                        {{ Form::submit('Aplică modificările', ['class' => 'btn btn-primary']) }}
+                    </div>
 
-                        {{-- Middle name --}}
-                        <div class="form-group{{ $errors->has('middle_name') ? ' has-error' : '' }}">
-                            <label for="middle_name" class="col-md-4 control-label">Nume mijlociu</label>
-
-                            <div class="col-md-6">
-                                <input id="js-middle-name" type="text" class="form-control" name="middle_name" value="{{ old('middle_name') }}" placeholder="Optional" autofocus>
-
-                                @if ($errors->has('middle_name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('middle_name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        {{-- Last name --}}
-                        <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-                            <label for="last_name" class="col-md-4 control-label">Nume *</label>
-
-                            <div class="col-md-6">
-                                <input id="js-last-name" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" autofocus>
-
-                                @if ($errors->has('last_name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('last_name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        {{-- Date hired --}}
-                        <div class="form-group{{ $errors->has('date_hired') ? ' has-error' : '' }}">
-                            <label for="date_hired" class="col-md-4 control-label">Data angajare</label>
-
-                            <div class="col-md-6">
-                                <input id="js-date-hired" type="text" class="form-control" name="date_hired" value="2019-01-01" disabled>
-
-                                @if ($errors->has('date_hired'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('date_hired') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        {{-- Is user active --}}
-                        <div class="form-group{{ $errors->has('active') ? ' has-error' : '' }}">
-                            {{-- <label for="active" class="col-md-4 control-label">User activ</label> --}}
-
-                            <div class="col-md-6">
-                                <input id="js-active" type="hidden" class="form-control" name="active" value="1">
-
-                                @if ($errors->has('active'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('active') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        {{-- Email --}}
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="js-email" type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        {{-- Password --}}
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Parola *</label>
-
-                            <div class="col-md-6">
-                                <input id="js-password" type="password" class="form-control" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        {{-- Password confirmation --}}
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password_confirmation" class="col-md-4 control-label">Confirmare parola *</label>
-
-                            <div class="col-md-6">
-                                <input id="js-password-confirmation" type="password" class="form-control" name="password_confirmation">
-
-                                @if ($errors->has('password_confirmation'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        @if ($errors->any())    
-                            <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                            </ul>
-                        @endif
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Register
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    {{ Form::close() }}
                 </div>
             </div>
         </div>
