@@ -27,29 +27,29 @@
                     <tbody>
                         @foreach ($users as $user)
                             <tr>
-                                <td>
+                                <td class="align-middle">
                                     <a href="{{ route('panel_users_show', $user->user_id) }}">
                                         {{ $user->user_id }}
                                     </a>
                                 </td>
-                                <td>
+                                <td class="align-middle">
                                     <a href="{{ route('panel_users_show', $user->user_id) }}">
                                         {{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}
                                     </a>
                                 </td>
-                                <td>{{ $user->department_name }}</td>
-                                <td>{{ $user->function_name }}</td>
-                                <td>
+                                <td class="align-middle">{{ $user->department_name }}</td>
+                                <td class="align-middle">{{ $user->function_name }}</td>
+                                <td class="align-middle">
                                     <a href="#" class="btn btn-small btn-success">
                                         <i class="far fa-calendar-check"></i>
                                     </a>
                                 </td>
-                                <td>
+                                <td class="align-middle">
                                     <a href="{{ route('panel_users_edit', $user->user_id) }}" class="btn btn-small btn-warning">
                                         <i class="fas fa-user-edit"></i>
                                     </a>
                                 </td>
-                                <td>
+                                <td class="align-middle">
                                     <a href="#" class="btn btn-small btn-danger">
                                         <i class="fas fa-trash"></i>
                                     </a>
