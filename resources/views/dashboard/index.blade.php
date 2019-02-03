@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-lg-10">
         <div class="card">
-            <div class="card-header">Dashboard</div>
+            <div class="card-header">Sumar</div>
 
             <div class="card-body">
                 @if (session('status'))
@@ -13,7 +13,6 @@
                     </div>
                 @endif
 
-                <h1>Summary View</h1>
             </div>
         </div>
     </div>

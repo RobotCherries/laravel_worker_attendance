@@ -36400,7 +36400,7 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-__webpack_require__(/*! ./register */ "./resources/js/register.js"); // window.Vue = require('vue');
+__webpack_require__(/*! ./get-functions */ "./resources/js/get-functions.js"); // window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your
@@ -36482,16 +36482,16 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/js/register.js":
-/*!**********************************!*\
-  !*** ./resources/js/register.js ***!
-  \**********************************/
+/***/ "./resources/js/get-functions.js":
+/*!***************************************!*\
+  !*** ./resources/js/get-functions.js ***!
+  \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 window.onload = function () {
   // Functions dropdown - dependend on department
-  $('select[name="department_id"]').on('change', function () {
+  $('select[name="department"]').on('change', function () {
     var departmentId = $(this).val();
 
     if (departmentId) {
@@ -36499,25 +36499,17 @@ window.onload = function () {
         url: '/functions/get/' + departmentId,
         type: "GET",
         dataType: "json",
-        beforeSend: function beforeSend() {
-          $('#loader').css("visibility", "visible");
-        },
         success: function success(data) {
-          $('select[name="function_id"]').empty();
+          $('select[name="function"]').empty();
           $.each(data, function (key, value) {
-            $('select[name="function_id"]').append("<option value=".concat(key, ">").concat(key, " - ").concat(value, "</option>"));
+            $('select[name="function"]').append("<option value=".concat(key, ">").concat(key, " - ").concat(value, "</option>"));
           });
-        },
-        complete: function complete() {
-          $('#loader').css("visibility", "hidden");
         }
       });
     } else {
-      $('select[name="function_id"]').empty();
+      $('select[name="function"]').empty();
     }
-  }); // Date hired - date picker
-  // console.log('connected');
-  // $('input[name="date_hired"]').datepicker();
+  });
 };
 
 /***/ }),

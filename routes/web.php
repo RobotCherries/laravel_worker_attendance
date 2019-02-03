@@ -18,6 +18,7 @@ Route::get('/', function () {
 // Authentication
 Auth::routes();
 Route::get('functions/get/{id}', 'Auth\RegisterController@getFunctions');
+Route::get('functions/get/{id}', 'UsersController@getFunctions');
 
 // Pages
 Route::get('/acasa', 'HomeController@index')->name('home');
@@ -28,5 +29,7 @@ Route::prefix('panou')->group(function () {
     Route::get('/muncitori', 'UsersController@index')->name('panel_users');
     Route::get('/muncitori/adauga', 'UsersController@create')->name('panel_users_create');
     Route::get('/muncitori/{id}', 'UsersController@show')->name('panel_users_show');
+    Route::get('/muncitori/{id}/modifica', 'UsersController@edit')->name('panel_users_edit');
+    Route::put('/muncitori/{id}/update', 'UsersController@update')->name('panel_users_update');
 });
 Route::get('/setari', 'SettingsController@index')->name('settings');
