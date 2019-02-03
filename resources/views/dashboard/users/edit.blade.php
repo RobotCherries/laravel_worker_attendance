@@ -67,7 +67,7 @@
                     <div class="row">
                         {{-- Email --}}
                         <div class="col">
-                            {{ Form::label('email', 'Adresă de email', ['class' => 'control-label']) }}
+                            {{ Form::label('email', 'Adresă de email *', ['class' => 'control-label']) }}
                             {{ Form::email('email', $user->email, ['class' => 'js-email form-control', 'autofocus', 'required']) }}
                         </div>
                         {{-- Date hired--}}
