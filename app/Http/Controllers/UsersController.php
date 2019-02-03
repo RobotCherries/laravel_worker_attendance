@@ -85,8 +85,8 @@ class UsersController extends Controller
         $user = User::findOrFail($id);
         $user_department = DB::table('departments')->where('department_id', $user->department_id)->value('department_name');
         $user_function = DB::table('functions')->where('function_id', $user->function_id)->value('function_name');
-        $departments = DB::table('departments')->pluck('department_name', 'department_id');
-        $functions = DB::table('functions')->pluck('function_name', 'function_id');
+        $departments = DB::table('departments')->orderBy('department_id', 'asc')->pluck('department_name', 'department_id');
+        $functions = DB::table('functions')->where('department_id', $user->department_id)->pluck('function_name', 'function_id');
 
         return view('dashboard.users.edit', compact('id', 'user', 'user_department', 'user_function', 'departments', 'functions'));
     }
@@ -97,9 +97,9 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getFunctions($id)
+    public function getFunctions($id, $department_id)
     {
-        $functions = DB::table('functions')->where('department_id', $id)->pluck('function_name', 'function_id');
+        $functions = DB::table('functions')->where('department_id', $department_id)->pluck('function_name', 'function_id');
    
         return json_encode($functions);
     }

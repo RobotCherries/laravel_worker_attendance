@@ -36496,14 +36496,20 @@ window.onload = function () {
 
     if (departmentId) {
       $.ajax({
-        url: '/functions/get/' + departmentId,
+        url: "".concat(window.location.pathname, "/functions/get/").concat(departmentId),
         type: "GET",
         dataType: "json",
+        beforeSend: function beforeSend() {
+          $('#loader').css("visibility", "visible");
+        },
         success: function success(data) {
           $('select[name="function"]').empty();
           $.each(data, function (key, value) {
-            $('select[name="function"]').append("<option value=".concat(key, ">").concat(key, " - ").concat(value, "</option>"));
+            $('select[name="function"]').append("<option value=".concat(key, ">").concat(value, "</option>"));
           });
+        },
+        complete: function complete() {
+          $('#loader').css("visibility", "hidden");
         }
       });
     } else {

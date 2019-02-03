@@ -12,11 +12,11 @@
                         @csrf
 
                         {{-- User role --}}
-                        <div class="form-group{{ $errors->has('user_role_id') ? ' has-error' : '' }}">
-                            <label for="user_role_id" class="col-md-4 control-label">Rol utilizator *</label>
+                        <div class="form-group{{ $errors->has('user_role') ? ' has-error' : '' }}">
+                            <label for="user_role" class="col-md-4 control-label">Rol utilizator *</label>
 
                             <div class="col-md-4">
-                                <select id="js-user-role-id" name="user_role_id" class="custom-select custom-select-lg mb-3">
+                                <select id="js-user-role-id" name="user_role" class="custom-select custom-select-lg mb-3">
                                     <option value="0">
                                         Alege rolul de utilizator
                                     </option>
@@ -27,20 +27,20 @@
                                     @endforeach
                                 </select>
 
-                                @if ($errors->has('user_role_id'))
+                                @if ($errors->has('user_role'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('user_role_id') }}</strong>
+                                        <strong>{{ $errors->first('user_role') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         {{-- Department --}}
-                        <div class="form-group{{ $errors->has('department_id') ? ' has-error' : '' }}">
-                            <label for="department_id" class="col-md-4 control-label">Departament *</label>
+                        <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
+                            <label for="department" class="col-md-4 control-label">Departament *</label>
 
                             <div class="col-md-4">
-                                <select id="js-department-id" name="department_id" class="custom-select custom-select-lg mb-3">
+                                <select id="js-department-id" name="department" class="custom-select custom-select-lg mb-3">
                                     <option value="0">
                                         Alege departamentul
                                     </option>
@@ -51,26 +51,26 @@
                                     @endforeach
                                 </select>
 
-                                @if ($errors->has('department_id'))
+                                @if ($errors->has('department'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('department_id') }}</strong>
+                                        <strong>{{ $errors->first('department') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         {{-- Function --}}
-                        <div class="form-group{{ $errors->has('function_id') ? ' has-error' : '' }}">
-                            <label for="function_id" class="col-md-4 control-label">Functie *</label>
+                        <div class="form-group{{ $errors->has('function') ? ' has-error' : '' }}">
+                            <label for="function" class="col-md-4 control-label">Functie *</label>
 
                             <div class="col-md-6">
-                                <select id="js-function-id" name="function_id" class="custom-select custom-select-lg mb-3">
+                                <select id="js-function-id" name="function" class="custom-select custom-select-lg mb-3">
                                         <option value="0">Alege funcția</option>
                                 </select>
 
-                                @if ($errors->has('function_id'))
+                                @if ($errors->has('function'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('function_id') }}</strong>
+                                        <strong>{{ $errors->first('function') }}</strong>
                                     </span>
                                 @endif
                             </div>

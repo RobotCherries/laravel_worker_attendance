@@ -79,9 +79,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'user_role_id' => 'required|numeric',
-            'department_id' => 'required|numeric',
-            'function_id' => 'required|numeric',
+            'user_role' => 'required|numeric',
+            'department' => 'required|numeric',
+            'function' => 'required|numeric',
 
             'first_name' => 'required|max:45',
             'middle_name' => 'nullable|max:45',
@@ -104,9 +104,9 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'user_role_id' => isset($data['user_role_id']),
-            'department_id' => isset($data['department_id']),
-            'function_id' => isset($data['function_id']),
+            'user_role_id' => isset($data['user_role']),
+            'department_id' => isset($data['department']),
+            'function_id' => isset($data['function']),
 
             'first_name' => $data['first_name'],
             'middle_name' => $data['middle_name'],
