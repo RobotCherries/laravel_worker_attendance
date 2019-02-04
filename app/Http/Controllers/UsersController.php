@@ -70,8 +70,11 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
+        $user_role = DB::table('user_roles')->where('user_role_id', $user->user_role_id)->value('user_role');
+        $user_department = DB::table('departments')->where('department_id', $user->department_id)->value('department_name');
+        $user_function = DB::table('functions')->where('function_id', $user->function_id)->value('function_name');
 
-        return view('dashboard.users.show')->with('user', $user);
+        return view('dashboard.users.show', compact('user', 'user_role', 'user_department', 'user_function'));
     }
 
     /**
@@ -83,8 +86,10 @@ class UsersController extends Controller
     public function clocking($id)
     {
         $user = User::findOrFail($id);
+        $user_department = DB::table('departments')->where('department_id', $user->department_id)->value('department_name');
+        $user_function = DB::table('functions')->where('function_id', $user->function_id)->value('function_name');
 
-        return view('dashboard.users.clocking')->with('user', $user);
+        return view('dashboard.users.clocking', compact('user', 'user_department', 'user_function'));
     }
 
     /**
