@@ -47,18 +47,18 @@
                                 <td class="align-middle">{{ $user->department_name }}</td>
                                 <td class="align-middle">{{ $user->function_name }}</td>
                                 <td class="align-middle">
-                                    <a href="#" class="btn btn-sm btn-primary">
+                                    <a href="#" class="btn btn-sm btn-primary text-light">
                                         <i class="far fa-calendar-check"></i>
                                     </a>
                                 </td>
                                 <td class="align-middle">
-                                    <a href="{{ route('panel_users_edit', $user->user_id) }}" class="btn btn-sm btn-info">
+                                    <a href="{{ route('panel_users_edit', $user->user_id) }}" class="btn btn-sm btn-info text-light">
                                         <i class="fas fa-user-edit"></i>
                                     </a>
                                 </td>
                                 <td class="align-middle">
                                     {{ Form::open(['method' => 'delete', 'route' => ['panel_users_delete', $user->user_id], 'class' => 'pull-right']) }}
-                                        {{ Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-sm btn-danger']) }}
+                                        {{ Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-sm btn-danger text-light']) }}
                                     {{ Form::close() }}
                                 </td>
                             </tr>
