@@ -5,16 +5,34 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header text-center">{{ __('Register') }}</div>
 
                 <div class="card-body">
                     <!-- if there are creation errors, they will show here -->
                     {{ Html::ul($errors->all()) }}
 
                     {{ Form::open(array('route' => array('register'))) }}
+                    
+                    <h4 class="mt-4">Date companie</h4>
+                    <hr class="mt-0 mb-4">
 
                     <div class="form-group">
-                        <h4 class="mt-4">Nume angajat</h4>
+                        <div class="row">
+                            {{-- Department--}}
+                            <div class="col">
+                                {{ Form::label('department', 'Departament *', ['class' => 'control-label']) }}
+                                {{ Form::select('department', array('0' => 'Alege un departament') + $departments->toArray(), 0, ['id' => 'js-department', 'class' => 'custom-select', 'autofocus', 'required']) }}
+                            </div>
+                            {{-- Function--}}
+                            <div class="col">
+                                {{ Form::label('function', 'Funcție *', ['class' => 'control-label']) }}
+                                {{ Form::select('function', ['0' => 'Alege o funcție'], '0', ['id' => 'js-function', 'class' => 'custom-select', 'autofocus', 'required']) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4 class="mt-5">Nume angajat</h4>
                         <hr class="mt-0 mb-4">
                         <div class="row">
                             {{-- First name --}}
@@ -31,24 +49,6 @@
                             <div class="col">
                                 {{ Form::label('last_name', 'Nume *', ['class' => 'control-label']) }}
                                 {{ Form::text('last_name', null, ['id' => 'js-last-name', 'class' => 'form-control', 'autofocus', 'required']) }}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <h4 class="mt-5">Date companie</h4>
-                    <hr class="mt-0 mb-4">
-
-                    <div class="form-group">
-                        <div class="row">
-                            {{-- Department--}}
-                            <div class="col">
-                                {{ Form::label('department', 'Departament *', ['class' => 'control-label']) }}
-                                {{ Form::select('department', array('0' => 'Alege un departament') + $departments->toArray(), null, ['id' => 'js-department', 'class' => 'custom-select', 'autofocus', 'required']) }}
-                            </div>
-                            {{-- Function--}}
-                            <div class="col">
-                                {{ Form::label('function', 'Funcție *', ['class' => 'control-label']) }}
-                                {{ Form::select('function', ['0' => 'Alege o funcție'], '0', ['id' => 'js-function', 'class' => 'custom-select', 'autofocus', 'required']) }}
                             </div>
                         </div>
                     </div>

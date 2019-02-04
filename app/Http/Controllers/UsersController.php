@@ -31,7 +31,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = DB::table('users')
+        $users = DB::table('users')->orderBy('user_id', 'asc')
         ->join('departments', 'users.department_id', '=', 'departments.department_id')
         ->join('functions', 'users.function_id', '=', 'functions.function_id')
         ->select('users.*', 'departments.department_name', 'functions.function_name')
