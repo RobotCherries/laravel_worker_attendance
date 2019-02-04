@@ -36,7 +36,7 @@ class UsersController extends Controller
         ->join('departments', 'users.department_id', '=', 'departments.department_id')
         ->join('functions', 'users.function_id', '=', 'functions.function_id')
         ->select('users.*', 'departments.department_name', 'functions.function_name')
-        ->simplePaginate(6);
+        ->simplePaginate(10);
         $current_user = Auth::user();
 
         return view('dashboard.users.index', compact('current_user', 'users'));
