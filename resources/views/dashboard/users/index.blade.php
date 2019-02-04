@@ -42,6 +42,9 @@
                                 <td class="align-middle">
                                     <a href="{{ route('panel_users_show', $user->user_id) }}">
                                         {{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}
+                                        @if($user->user_id == $current_user->user_id)
+                                            <span class="badge badge-pill badge-success">tu</span>
+                                        @endif
                                     </a>
                                 </td>
                                 <td class="align-middle">{{ $user->department_name }}</td>
@@ -52,13 +55,13 @@
                                     </a>
                                 </td>
                                 <td class="align-middle">
-                                    <a href="{{ route('panel_users_edit', $user->user_id) }}" class="btn btn-sm btn-info text-light">
+                                    <a href="{{ route('panel_users_edit', $user->user_id) }}" class="btn btn-sm btn-secondary text-light">
                                         <i class="fas fa-user-edit"></i>
                                     </a>
                                 </td>
                                 <td class="align-middle">
                                     {{ Form::open(['method' => 'delete', 'route' => ['panel_users_delete', $user->user_id], 'class' => 'pull-right']) }}
-                                        {{ Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-sm btn-danger text-light']) }}
+                                        {{ Form::button('<i class="fas fa-trash-alt"></i>', ['type' => 'submit', 'class' => 'btn btn-sm btn-danger text-light']) }}
                                     {{ Form::close() }}
                                 </td>
                             </tr>

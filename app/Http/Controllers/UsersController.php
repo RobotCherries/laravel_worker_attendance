@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,8 +37,9 @@ class UsersController extends Controller
         ->join('functions', 'users.function_id', '=', 'functions.function_id')
         ->select('users.*', 'departments.department_name', 'functions.function_name')
         ->simplePaginate(6);
+        $current_user = Auth::user();
 
-        return view('dashboard.users.index', ['users' => $users]);
+        return view('dashboard.users.index', compact('current_user', 'users'));
     }
 
     /**
