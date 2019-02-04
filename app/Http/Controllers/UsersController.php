@@ -162,6 +162,12 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Delete
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        // redirect
+        Session::flash('message', 'Angajatul a fost șters cu success!');
+        return redirect()->route('panel_users');
     }
 }

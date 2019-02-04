@@ -13,13 +13,17 @@
                     </div>
                 @endif
 
-                <h1>User Show</h1>
-                <h3>{{$user->first_name}} {{$user->last_name}}</h3>
+                <h2 class="text-center mt-5">{{$user->first_name}} {{$user->last_name}}</h2>
 
-                <a href="{{ route('panel_users_edit', $user->user_id) }}" class="btn btn-small btn-warning">
-                    <i class="fas fa-user-edit mr-1"></i>
-                    Modifică
-                </a>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a href="{{ route('panel_users_edit', $user->user_id) }}" class="btn btn-warning">
+                        <i class="fas fa-user-edit mr-1"></i>
+                        Modifică
+                    </a>
+                    {{ Form::open(['method' => 'delete', 'route' => ['panel_users_delete', $user->user_id], 'class' => 'pull-right']) }}
+                        {{ Form::button('<i class="fas fa-trash mr-1"></i> Șterge', ['type' => 'submit', 'class' => 'btn btn-danger rounded-right', 'style' => 'border-radius: 0;']) }}
+                    {{ Form::close() }}
+                </div>
             </div>
         </div>
     </div>

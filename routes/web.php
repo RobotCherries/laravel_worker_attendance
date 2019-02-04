@@ -35,6 +35,8 @@ Route::prefix('panou')->group(function () {
     Route::get('/muncitori/{id}/modifica', 'UsersController@edit')->name('panel_users_edit');
     Route::get('/muncitori/{id}/modifica/functions/get/{department_id}', 'UsersController@getFunctions');
     // Update
-    Route::put('/muncitori/{id}/update', 'UsersController@update')->name('panel_users_update');
+    Route::put('/muncitori/{id}/actualizeaza', 'UsersController@update')->name('panel_users_update');
+    // Delete
+    Route::delete('/muncitori/{id}/sterge', 'UsersController@destroy')->name('panel_users_delete');
 });
 Route::get('/setari', 'SettingsController@index')->name('settings');
