@@ -21,7 +21,7 @@
                             {{-- Department--}}
                             <div class="col">
                                 {{ Form::label('department', 'Departament *', ['class' => 'control-label']) }}
-                                {{ Form::select('department', array('0' => 'Alege un departament') + $departments->toArray(), 0, ['id' => 'js-department', 'class' => 'custom-select', 'autofocus', 'required']) }}
+                                {{ Form::select('department', array('0' => 'Alege un departament') + $departments->toArray(), '0', ['id' => 'js-department', 'class' => 'custom-select', 'autofocus', 'required']) }}
                             </div>
                             {{-- Function--}}
                             <div class="col">
