@@ -16,6 +16,10 @@
                 <h2 class="text-center mt-5">{{$user->first_name}} {{$user->last_name}}</h2>
 
                 <div class="btn-group" role="group" aria-label="Basic example">
+                    <a href="{{ route('panel_users_clocking', $user->user_id) }}" class="btn btn-warning">
+                        <i class="fas fa-user-edit mr-1"></i>
+                        Pontează
+                    </a>
                     <a href="{{ route('panel_users_edit', $user->user_id) }}" class="btn btn-warning">
                         <i class="fas fa-user-edit mr-1"></i>
                         Modifică

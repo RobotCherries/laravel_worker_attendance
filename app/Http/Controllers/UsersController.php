@@ -75,6 +75,19 @@ class UsersController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function clocking($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('dashboard.users.clocking')->with('user', $user);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

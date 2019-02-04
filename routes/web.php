@@ -31,6 +31,8 @@ Route::prefix('panou')->group(function () {
     Route::get('/muncitori/adauga', 'UsersController@create')->name('panel_users_create');
     // Show
     Route::get('/muncitori/{id}', 'UsersController@show')->name('panel_users_show');
+    // Clocking
+    Route::get('/muncitori/{id}/pontare', 'UsersController@clocking')->name('panel_users_clocking');
     // Edit
     Route::get('/muncitori/{id}/modifica', 'UsersController@edit')->name('panel_users_edit');
     Route::get('/muncitori/{id}/modifica/functions/get/{department_id}', 'UsersController@getFunctions');
