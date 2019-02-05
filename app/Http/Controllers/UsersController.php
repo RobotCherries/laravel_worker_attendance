@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
-use App\User;
+use App\Users;
+use App\Clockings;
 
 class UsersController extends Controller
 {
@@ -71,7 +72,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = Users::findOrFail($id);
         $user_role = DB::table('user_roles')->where('user_role_id', $user->user_role_id)->value('user_role');
         $user_department = DB::table('departments')->where('department_id', $user->department_id)->value('department_name');
         $user_function = DB::table('functions')->where('function_id', $user->function_id)->value('function_name');
@@ -80,20 +81,102 @@ class UsersController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Create clockings.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function clocking($id)
+    public function clockings($id)
     {
-        $user = User::findOrFail($id);
+        $user = Users::findOrFail($id);
+        $user_role_id = DB::table('departments')->where('department_id', $user->department_id)->value('department_id');
+        $user_department_id = DB::table('departments')->where('department_id', $user->department_id)->value('department_id');
+        $user_function_id = DB::table('functions')->where('function_id', $user->function_id)->value('function_id');
+        
+        $user_role = DB::table('user_roles')->where('user_role_id', $user->user_role_id)->value('user_role');
         $user_department = DB::table('departments')->where('department_id', $user->department_id)->value('department_name');
         $user_function = DB::table('functions')->where('function_id', $user->function_id)->value('function_name');
+        
+        $clocking_types = DB::table('clocking_types')->select(DB::raw("CONCAT(clocking_type_tag, ' - ', clocking_type) AS clocking_type, clocking_type_id"))->pluck('clocking_type', 'clocking_type_id');
+        $clockings = DB::table('clockings')->where('user_id', $id)
+                                           ->join('clocking_types', 'clockings.clocking_type_id', '=', 'clocking_types.clocking_type_id')
+                                           ->select('clockings.*', 'clocking_types.clocking_type_tag')
+                                           ->orderBy('clocking_date', 'asc')
+                                           ->simplePaginate(3);
 
-        return view('dashboard.users.clocking', compact('user', 'user_department', 'user_function'));
+        return view('dashboard.users.clocking', compact('id', 'user', 'user_role_id', 'user_department_id', 'user_function_id', 'user_role', 'user_department', 'user_function', 'clocking_types', 'clockings'));
     }
 
+    /**
+     * Store clockings.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function clockings_store($id)
+    {
+        // Validation
+        $rules = array(
+            'user' => 'required|numeric',
+            'user_role' => 'required|numeric',
+            'department' => 'required|numeric',
+            'function' => 'required|numeric',
+
+            'clocking_type' => 'required|numeric|min:1',
+            'clocking_date' => 'required|date',
+            'clocking_hours' => 'required|numeric',
+            
+            'clocking_presence' => 'required|boolean',
+            'clocking_overtime' => 'required|boolean',
+            'clocking_weekend' => 'required|boolean',
+        );
+        $validator = Validator::make(Input::all(), $rules);
+
+        // Process validation
+        if ($validator->fails()) {
+            return Redirect::to('panou/muncitori/' . $id . '/pontare')
+                ->withErrors($validator)
+                ->withInput(Input::all());
+        } else {
+            // store
+            $clocking = new Clockings;
+            $clocking->user_id           = Input::get('user');
+            $clocking->user_role_id      = Input::get('user_role');
+            $clocking->department_id     = Input::get('department');
+            $clocking->function_id       = Input::get('function');
+            $clocking->clocking_type_id  = Input::get('clocking_type');
+
+            $clocking->clocking_date     = Input::get('clocking_date');
+            $clocking->clocking_hours    = Input::get('clocking_hours');
+
+            $clocking->clocking_presence = Input::get('clocking_presence');
+            $clocking->clocking_overtime = Input::get('clocking_overtime');
+            $clocking->clocking_weekend  = Input::get('clocking_weekend');
+            $clocking->save();
+
+            // redirect
+            Session::flash('message', 'Pontaj adăugat cu success!');
+            return back();
+        }
+    }
+
+    /**
+     * Remove clocking from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function clockings_destroy($id, $clocking_id)
+    {
+        // Delete
+        $clocking = DB::table('clockings')->where('clocking_id', $clocking_id);
+        $clocking->delete();
+
+        // redirect
+        Session::flash('message', 'Pontajul a fost șters cu success!');
+        return redirect()->route('panel_users_clockings', $id);
+    }
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -102,7 +185,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
+        $user = Users::findOrFail($id);
         $user_department = DB::table('departments')->where('department_id', $user->department_id)->value('department_name');
         $user_function = DB::table('functions')->where('function_id', $user->function_id)->value('function_name');
         $departments = DB::table('departments')->orderBy('department_id', 'asc')->pluck('department_name', 'department_id');
@@ -155,7 +238,7 @@ class UsersController extends Controller
                 ->withInput(Input::all());
         } else {
             // store
-            $user = User::find($id);
+            $user = Users::find($id);
             $user->department_id  = Input::get('department');
             $user->function_id  = Input::get('function');
 
@@ -183,7 +266,7 @@ class UsersController extends Controller
     public function destroy($id)
     {
         // Delete
-        $user = User::findOrFail($id);
+        $user = Users::findOrFail($id);
         $user->delete();
 
         // redirect

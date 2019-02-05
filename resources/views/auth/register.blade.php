@@ -102,7 +102,7 @@
                             </div>
                         </div>
                     </div>
-
+Q
                     <div class="form-group text-center mt-5">
                         {{ Form::submit('Aplică modificările', ['class' => 'btn btn-primary']) }}
                     </div>

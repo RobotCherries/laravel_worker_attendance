@@ -14,7 +14,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('panel_users_clocking', $user->user_id) }}" class="nav-link">
+                        <a href="{{ route('panel_users_clockings', $user->user_id) }}" class="nav-link">
                             <i class="fas fa-calendar-check mr-1"></i>
                             Pontează
                         </a>

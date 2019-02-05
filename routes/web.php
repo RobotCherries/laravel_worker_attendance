@@ -32,7 +32,9 @@ Route::prefix('panou')->group(function () {
     // Show
     Route::get('/muncitori/{id}', 'UsersController@show')->name('panel_users_show');
     // Clocking
-    Route::get('/muncitori/{id}/pontare', 'UsersController@clocking')->name('panel_users_clocking');
+    Route::get('/muncitori/{id}/pontare', 'UsersController@clockings')->name('panel_users_clockings');
+    Route::post('/muncitori/{id}/pontare', 'UsersController@clockings_store')->name('panel_users_clockings_store');
+    Route::delete('/muncitori/{id}/pontare/{clocking_id}/sterge', 'UsersController@clockings_destroy')->name('panel_users_clockings_delete');
     // Edit
     Route::get('/muncitori/{id}/modifica', 'UsersController@edit')->name('panel_users_edit');
     Route::get('/muncitori/{id}/modifica/functions/get/{department_id}', 'UsersController@getFunctions');

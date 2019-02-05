@@ -46,7 +46,7 @@
                                 <td class="align-middle p-1">{{ $user->department_name }}</td>
                                 <td class="align-middle p-1">{{ $user->function_name }}</td>
                                 <td class="align-middle p-1">
-                                    <a href="{{ route('panel_users_clocking', $user->user_id) }}" class="btn btn-sm btn-primary text-light">
+                                    <a href="{{ route('panel_users_clockings', $user->user_id) }}" class="btn btn-sm btn-primary text-light">
                                         <i class="far fa-calendar-check"></i>
                                     </a>
                                 </td>
