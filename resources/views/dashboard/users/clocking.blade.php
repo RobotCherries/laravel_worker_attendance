@@ -102,7 +102,6 @@
                         </div>
                     </div>
 
-
                     <script type="text/javascript">
                         /* Add datepicker within selected div */
                         window.onload = function() {
