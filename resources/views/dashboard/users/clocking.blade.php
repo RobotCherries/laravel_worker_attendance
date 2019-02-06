@@ -71,35 +71,49 @@
                     <h4 class="mt-5">Date pontaj</h4>
                     <hr class="mt-0 mb-4">
                     
-                    {{-- Clocking type --}}
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-sm-5">
-                                {{ Form::label('clocking_type', 'Tip *', ['class' => 'control-label']) }}
-                                {{ Form::select('clocking_type', ['0' => 'Alege tipul de pontaj'] + $clocking_types->toArray(), '', ['id' => 'js-department', 'class' => 'custom-select', 'autofocus', 'required']) }}
+                            <div class="col">
+                                {{-- Clocking type --}}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col">
+                                            {{ Form::label('clocking_type', 'Tip *', ['class' => 'control-label']) }}
+                                            {{ Form::select('clocking_type', ['0' => 'Alege tipul de pontaj'] + $clocking_types->toArray(), '', ['id' => 'js-department', 'class' => 'custom-select', 'autofocus', 'required']) }}
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                {{-- Clocking hours --}}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col">
+                                            {{ Form::label('clocking_hours', 'Număr ore *', ['class' => 'control-label']) }}
+                                            {{ Form::number('clocking_hours', '8', ['min' => '0', 'max' => '12', 'class' => 'form-control', 'required']) }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    
-                    {{-- Clocking date --}}
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                {{ Form::label('clocking_date', 'Data/Perioada *', ['class' => 'control-label']) }}
-                                {{ Form::date('clocking_date', \Carbon\Carbon::now()->format('Y-m-d'), ['class' => 'form-control', 'required']) }}
+                            {{-- Clocking date/period --}}
+                            <div class="col">
+                                {{ Form::label('clocking_date', 'Dată/Perioadă pontaj *', ['class' => 'control-label']) }}
+                                {{ Form::date('clocking_date', '', ['id' => 'js-datepicker', 'class' => 'form-control', 'placeholder' => 'Dată pontaj']) }}
                             </div>
                         </div>
                     </div>
 
-                    {{-- Clocking hours --}}
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                {{ Form::label('clocking_hours', 'Număr ore *', ['class' => 'control-label']) }}
-                                {{ Form::number('clocking_hours', '8', ['min' => '0', 'max' => '12', 'class' => 'form-control', 'required']) }}
-                            </div>
-                        </div>
-                    </div>
+
+                    <script type="text/javascript">
+                        /* Add datepicker within selected div */
+                        window.onload = function() {
+                            $(function() {
+                                // init daterangepicker 
+                                let datePicker = $('#js-datepicker').daterangepicker({
+                                    "alwaysShowCalendars": true,
+                                });
+                            });
+                        }
+                    </script>
 
                     <h4 class="mt-5">Alte</h4>
                     <hr class="mt-0 mb-4">
@@ -139,14 +153,14 @@
                     </div>
 
                     <div class="form-group text-center mt-5">
-                        {{ Form::submit('Aplică modificările', ['class' => 'btn btn-primary']) }}
+                        {{ Form::submit('Adagugă pontare', ['class' => 'btn btn-primary']) }}
                     </div>
 
                     {{ Form::close() }}
                 </div>
 
+                {{-- Users table --}}
                 <div class="clockings-table__container">
-                    {{-- Users table --}}
                     <table class="table table-striped table-hover table-sm">
                         <thead class="thead-light">
                             <tr>
