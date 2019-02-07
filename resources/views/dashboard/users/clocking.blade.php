@@ -1,6 +1,21 @@
 @extends('layouts.dashboard')
 
 @section('content')
+    <style>
+    /* Date range picker */
+    .datepicker__container .daterangepicker::before,
+    .datepicker__container .daterangepicker::after,
+    .drp-calendar.right { display: none !important; }
+    .prev.available { visibility: hidden; }
+    /* .datepicker__container { height:316px; width:245px; margin:0 auto; } */
+    .datepicker__container .daterangepicker { position:relative !important; top:auto !important; left:auto !important; min-width:100%; border:0px; }
+    .drp-calendar.left { min-width:100%; margin:0; padding:0 !important; }
+    /* .datepicker__container { height: 318px; }s */
+    /* .datepicker__container .daterangepicker .drp-calendar { box-sizing: border-box; width:50%; max-width:50%; } */
+    .datepicker__input { width:340px; }
+    </style>
+
+
     <div class="row">
         <div class="col-lg-10">
             <div class="card">
@@ -93,25 +108,78 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                {{-- Clocking date/period --}}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col">
+                                            {{ Form::label('clocking_date', 'Dată/Perioadă pontaj *', ['class' => 'control-label']) }}
+                                            {{ Form::text('clocking_date', '', ['class' => 'js-datepicker__input datepicker__input form-control', 'placeholder' => 'Dată pontaj']) }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             {{-- Clocking date/period --}}
                             <div class="col">
-                                {{ Form::label('clocking_date', 'Dată/Perioadă pontaj *', ['class' => 'control-label']) }}
-                                {{ Form::date('clocking_date', '', ['id' => 'js-datepicker', 'class' => 'form-control', 'placeholder' => 'Dată pontaj']) }}
+                                <div class="datepicker">
+                                    <div class="js-datepicker__container datepicker__container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <script type="text/javascript">
-                        /* Add datepicker within selected div */
-                        window.onload = function() {
-                            $(function() {
-                                // init daterangepicker 
-                                let datePicker = $('#js-datepicker').daterangepicker({
-                                    "alwaysShowCalendars": true,
-                                });
-                            });
+                        let picker = $('.js-datepicker__input').daterangepicker({
+                        "parentEl": ".js-datepicker__container",
+                        "alwaysShowCalendars": true,
+                        "opens": "right",
+                        "applyButtonClasses": "btn-primary",
+                        "locale": {
+                            "format": 'YYYY-MM-DD',
+                            "separator": " - ",
+                            "applyLabel": "Aplică",
+                            "cancelLabel": "Anulează",
+                            "fromLabel": "Din",
+                            "toLabel": "pâna în",
+                            "customRangeLabel": "Personalizat",
+                            "weekLabel": "W",
+                            "daysOfWeek": [
+                                "Lu",
+                                "Ma",
+                                "Mi",
+                                "Jo",
+                                "Vi",
+                                "Sa",
+                                "Du"
+                            ],
+                            "monthNames": [
+                                "Ianuarie",
+                                "Februarie",
+                                "Martie",
+                                "Aprilie",
+                                "Mai",
+                                "Iunie",
+                                "Iulie",
+                                "August",
+                                "Septembrie",
+                                "Octombrie",
+                                "Noiembrie",
+                                "Decembrie"
+                            ],
+                            "firstDay": 1
+                        },
+                        "maxSpan": {
+                            "days": 30
                         }
+                        });
+                        // range update listener
+                        picker.on('apply.daterangepicker', function(ev, picker) {
+                        $(".js-datepicker__input").val(`${picker.startDate.format('YYYY-MM-DD')} - ${picker.endDate.format('YYYY-MM-DD')}`);
+                        });
+                        // prevent hide after range selection
+                        picker.data('daterangepicker').hide = function () {};
+                        // show picker on load
+                        picker.data('daterangepicker').show();
                     </script>
 
                     <h4 class="mt-5">Alte</h4>
