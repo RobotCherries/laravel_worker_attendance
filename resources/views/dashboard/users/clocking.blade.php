@@ -8,7 +8,7 @@
     .drp-calendar.right { display: none !important; }
     .prev.available { visibility: hidden; }
     /* .datepicker__container { height:316px; width:245px; margin:0 auto; } */
-    .datepicker__container .daterangepicker { position:relative !important; top:auto !important; left:auto !important; min-width:100%; border:0px; }
+    .datepicker__container .daterangepicker { position:relative !important; top:auto !important; left:auto !important; min-width:100%; }
     .drp-calendar.left { min-width:100%; margin:0; padding:0 !important; }
     /* .datepicker__container { height: 318px; }s */
     /* .datepicker__container .daterangepicker .drp-calendar { box-sizing: border-box; width:50%; max-width:50%; } */
@@ -98,16 +98,6 @@
                                         </div>
                                     </div>
                                 </div>
-            
-                                {{-- Clocking hours --}}
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col">
-                                            {{ Form::label('clocking_hours', 'Număr ore *', ['class' => 'control-label']) }}
-                                            {{ Form::number('clocking_hours', '8', ['min' => '0', 'max' => '12', 'class' => 'form-control', 'required']) }}
-                                        </div>
-                                    </div>
-                                </div>
 
                                 {{-- Clocking date/period --}}
                                 <div class="form-group">
@@ -115,6 +105,16 @@
                                         <div class="col">
                                             {{ Form::label('clocking_date', 'Dată/Perioadă pontaj *', ['class' => 'control-label']) }}
                                             {{ Form::text('clocking_date', '', ['class' => 'js-datepicker__input datepicker__input form-control', 'placeholder' => 'Dată pontaj']) }}
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                {{-- Clocking hours --}}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col">
+                                            {{ Form::label('clocking_hours', 'Număr ore *', ['class' => 'control-label']) }}
+                                            {{ Form::number('clocking_hours', '8', ['min' => '0', 'max' => '12', 'class' => 'js-clocking-hours form-control', 'required']) }}
                                         </div>
                                     </div>
                                 </div>
@@ -133,6 +133,7 @@
                         "parentEl": ".js-datepicker__container",
                         "alwaysShowCalendars": true,
                         "opens": "right",
+                        "linkedCalendars": false,
                         "applyButtonClasses": "btn-primary",
                         "locale": {
                             "format": 'YYYY-MM-DD',
@@ -180,6 +181,18 @@
                         picker.data('daterangepicker').hide = function () {};
                         // show picker on load
                         picker.data('daterangepicker').show();
+
+                        // Hours clocked trigger overtime switch/checkbox
+                        let clockingHours = $('.js-clocking-hours').val();
+                        console.log(clockingHours);
+
+                        $('.js-clocking-hours').change(() => {
+                            let clockingHours = $('.js-clocking-hours').val();
+                            console.log(clockingHours);
+                            if (clockingHours > 8) {
+                                $('.js-clocking-overtime').attr('checked',true);
+                            }
+                        });
                     </script>
 
                     <h4 class="mt-5">Alte</h4>
@@ -202,7 +215,7 @@
                                 {{ Form::label(null, 'Ore suplimentare', ['class' => 'control-label']) }}
                                 <div class="custom-control custom-switch mt-1 mr-sm-2">
                                     {{ Form::hidden('clocking_overtime', '0', false, ['id' => 'clocking_overtime', 'class' => 'custom-control-input']) }}
-                                    {{ Form::checkbox('clocking_overtime', '1', false, ['id' => 'clocking_overtime', 'class' => 'custom-control-input']) }}
+                                    {{ Form::checkbox('clocking_overtime', '1', false, ['id' => 'clocking_overtime', 'class' => 'js-clocking-overtime custom-control-input']) }}
                                     {{ Form::label('clocking_overtime', 'Da', ['class' => 'custom-control-label']) }}
                                 </div>
                             </div>
