@@ -167,7 +167,7 @@
                                 "Noiembrie",
                                 "Decembrie"
                             ],
-                            "firstDay": 1
+                            "firstDay": 0
                         },
                         "maxSpan": {
                             "days": 30
