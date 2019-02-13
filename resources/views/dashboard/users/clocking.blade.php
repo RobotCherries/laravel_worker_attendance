@@ -6,10 +6,11 @@
     .datepicker__container .daterangepicker::before,
     .datepicker__container .daterangepicker::after,
     .drp-calendar.right { display: none !important; }
-    .prev.available { visibility: hidden; }
+    .prev.available, .next.available { visibility: hidden; }
     /* .datepicker__container { height:316px; width:245px; margin:0 auto; } */
     .datepicker__container .daterangepicker { position:relative !important; top:auto !important; left:auto !important; min-width:100%; }
     .drp-calendar.left { min-width:100%; margin:0; padding:0 !important; }
+    .calendar-table { padding:0 !important; }
     /* .datepicker__container { height: 318px; }s */
     /* .datepicker__container .daterangepicker .drp-calendar { box-sizing: border-box; width:50%; max-width:50%; } */
     .datepicker__input { width:340px; }
@@ -130,21 +131,29 @@
 
                     <script type="text/javascript">
                         let picker = $('.js-datepicker__input').daterangepicker({
-                        "parentEl": ".js-datepicker__container",
-                        "alwaysShowCalendars": true,
-                        "opens": "right",
-                        "linkedCalendars": false,
-                        "applyButtonClasses": "btn-primary",
-                        "locale": {
-                            "format": 'YYYY-MM-DD',
-                            "separator": " - ",
-                            "applyLabel": "Aplică",
-                            "cancelLabel": "Anulează",
-                            "fromLabel": "Din",
-                            "toLabel": "pâna în",
-                            "customRangeLabel": "Personalizat",
-                            "weekLabel": "W",
-                            "daysOfWeek": [
+                        parentEl: ".js-datepicker__container",
+                        isInvalidDate: function(date) {
+                            let start = moment().startOf('month').format('YYYY-MM-DD');
+                            let end = moment().endOf('month').format('YYYY-MM-DD')
+                            
+                            if (date >= moment(start) && date <= moment(end) && date.weekday() !== 6 ) {
+                                return false;
+                            } else {
+                                return true; 
+                            }
+                        },
+                        alwaysShowCalendars: true,
+                        applyButtonClasses: "btn-primary",
+                        locale: {
+                            format: 'YYYY-MM-DD',
+                            separator: " / ",
+                            applyLabel: "Aplică",
+                            cancelLabel: "Anulează",
+                            fromLabel: "Din",
+                            toLabel: "pâna în",
+                            customRangeLabel: "Personalizat",
+                            weekLabel: "W",
+                            daysOfWeek: [
                                 "Lu",
                                 "Ma",
                                 "Mi",
@@ -153,7 +162,7 @@
                                 "Sa",
                                 "Du"
                             ],
-                            "monthNames": [
+                            monthNames: [
                                 "Ianuarie",
                                 "Februarie",
                                 "Martie",
@@ -167,31 +176,81 @@
                                 "Noiembrie",
                                 "Decembrie"
                             ],
-                            "firstDay": 0
+                            firstDay: 0
                         },
-                        "maxSpan": {
+                        maxSpan: {
                             "days": 30
                         }
                         });
                         // range update listener
                         picker.on('apply.daterangepicker', function(ev, picker) {
-                        $(".js-datepicker__input").val(`${picker.startDate.format('YYYY-MM-DD')} - ${picker.endDate.format('YYYY-MM-DD')}`);
+                            let startDate = picker.startDate.format('YYYY-MM-DD');
+                            let endDate = picker.endDate.format('YYYY-MM-DD');
+                            // Set the new date range value
+                            $('.js-datepicker__input').val(`${startDate} / ${endDate}`);
+                            console.log(`${startDate} / ${endDate}`);
+                            // Callback
+                            checkWeekend(startDate, endDate);
                         });
                         // prevent hide after range selection
                         picker.data('daterangepicker').hide = function () {};
                         // show picker on load
                         picker.data('daterangepicker').show();
 
-                        // Hours clocked trigger overtime switch/checkbox
+                        
+                        // 2. Hours clocked trigger overtime switch/checkbox
                         let clockingHours = $('.js-clocking-hours').val();
                         console.log(clockingHours);
 
                         $('.js-clocking-hours').change(() => {
                             let clockingHours = $('.js-clocking-hours').val();
-                            console.log(clockingHours);
                             if (clockingHours > 8) {
-                                $('.js-clocking-overtime').attr('checked',true);
+                                $('.js-clocking-overtime').attr('checked', true);
+                            } else {
+                                $('.js-clocking-overtime').attr('checked', false);
                             }
+                        });
+                        
+                        // 2. Clocked date triggers weekend switch/checkbox
+                        function checkWeekend(start, end) {
+                            let clockingWeekend = $('.js-datepicker__input').val();
+
+                            var dateStart = moment(start);
+                            var dateEnd = moment(end);
+                            
+                            // Get all the in between dates that are not Sunday
+                            var dates = [];
+                            while (dateEnd >= dateStart || dateStart === dateEnd) {
+                                if(dateEnd.weekday() !== 6 && dateStart.weekday() !== 6) {
+                                    dates.push(dateStart.format('YYYY-MM-DD'));
+                                }
+                                dateStart.add(1, 'day');
+                            }
+
+                            // If the date/period contains weekend dates, then it triggers the weekend switch
+                            for(let date of dates) {
+                                if(moment(date).weekday() === 5) {
+                                    $('.js-clocking-weekend').attr('checked', true);
+                                    return;
+                                } else {
+                                    $('.js-clocking-weekend').attr('checked', false);
+                                }
+                            }
+                            
+                        }
+
+                        $('.js-datepicker__input').on('input', function() {
+                            let clockingWeekend = $('.js-datepicker__input').val();
+                            // alert(clockingWeekend);
+                            // if (clockingWeekend >= '2019-02-02') {
+                            // } else {
+                            // }
+                        });
+
+                        // 3. Prevent overtime checking if selected hours are less than 9
+                        $('.js-clocking-overtime').on('switchChange.bootstrapSwitch', () => {
+                                console.log('checked');
+                                console.log('not');
                         });
                     </script>
 
@@ -215,7 +274,7 @@
                                 {{ Form::label(null, 'Ore suplimentare', ['class' => 'control-label']) }}
                                 <div class="custom-control custom-switch mt-1 mr-sm-2">
                                     {{ Form::hidden('clocking_overtime', '0', false, ['id' => 'clocking_overtime', 'class' => 'custom-control-input']) }}
-                                    {{ Form::checkbox('clocking_overtime', '1', false, ['id' => 'clocking_overtime', 'class' => 'js-clocking-overtime custom-control-input']) }}
+                                    {{ Form::checkbox('clocking_overtime', '1', false, ['id' => 'clocking_overtime', 'class' => 'js-clocking-overtime custom-control-input', 'disabled']) }}
                                     {{ Form::label('clocking_overtime', 'Da', ['class' => 'custom-control-label']) }}
                                 </div>
                             </div>
@@ -225,7 +284,7 @@
                                 {{ Form::label(null, 'Pontaj weekend', ['class' => 'control-label']) }}
                                 <div class="custom-control custom-switch mt-1 mr-sm-2">
                                     {{ Form::hidden('clocking_weekend', '0', false, ['id' => 'clocking_weekend', 'class' => 'custom-control-input']) }}
-                                    {{ Form::checkbox('clocking_weekend', '1', false, ['id' => 'clocking_weekend', 'class' => 'custom-control-input']) }}
+                                    {{ Form::checkbox('clocking_weekend', '1', false, ['id' => 'clocking_weekend', 'class' => 'js-clocking-weekend custom-control-input', 'disabled']) }}
                                     {{ Form::label('clocking_weekend', 'Da', ['class' => 'custom-control-label']) }}
                                 </div>
                             </div>
@@ -245,9 +304,6 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Rol</th>
-                                <th scope="col">Dept</th>
-                                <th scope="col" style="width: 15%">Funcție</th>
                                 <th scope="col">Tip</th>
                                 <th scope="col">Dată pontaj</th>
                                 <th scope="col">Ore</th>
@@ -261,11 +317,6 @@
                             @foreach ($clockings as $key => $value)
                                 <tr>
                                     <th class="align-middle p-1 text-center text-black-50">{{ $key + 1 }}</th>
-                                    <td class="align-middle p-1">
-                                        {{ $user_role }}
-                                    </td>
-                                    <td class="align-middle p-1">{{ $user_department }}</td>
-                                    <td class="align-middle p-1" style="text-overflow:ellipsis;">{{ $user_function }}</td>
                                     <td class="align-middle p-1">{{ $value->clocking_type_tag }}</td>
                                     <td class="align-middle p-1">{{ $value->clocking_date }}</td>
                                     <td class="align-middle p-1">{{ $value->clocking_hours }}</td>

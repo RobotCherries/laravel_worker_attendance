@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use App\Users;
 use App\Clockings;
+use Carbon\Carbon;
 
 class UsersController extends Controller
 {
@@ -102,7 +103,7 @@ class UsersController extends Controller
                                            ->join('clocking_types', 'clockings.clocking_type_id', '=', 'clocking_types.clocking_type_id')
                                            ->select('clockings.*', 'clocking_types.clocking_type_tag')
                                            ->orderBy('clocking_date', 'asc')
-                                           ->simplePaginate(3);
+                                           ->paginate(30);
 
         return view('dashboard.users.clocking', compact('id', 'user', 'user_role_id', 'user_department_id', 'user_function_id', 'user_role', 'user_department', 'user_function', 'clocking_types', 'clockings'));
     }
@@ -114,7 +115,7 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function clockings_store($id)
-    {
+    { 
         // Validation
         $rules = array(
             'user' => 'required|numeric',
@@ -123,13 +124,45 @@ class UsersController extends Controller
             'function' => 'required|numeric',
 
             'clocking_type' => 'required|numeric|min:1',
-            'clocking_date' => 'required|date',
+            'clocking_date' => 'required|string|unique:clockings',
             'clocking_hours' => 'required|numeric',
             
             'clocking_presence' => 'required|boolean',
             'clocking_overtime' => 'required|boolean',
             'clocking_weekend' => 'required|boolean',
         );
+
+        // Retrieve all form data
+        foreach($_POST as $key => $val) { 
+
+            $clockingDates = Input::get('clocking_date');
+
+            echo 'Field name : '.$key .', Value : '.$val.'<br>'; 
+            $data[$key] = $val;
+
+        } 
+        
+        // Split input string and get the 2 dates
+        $myArray = explode(' / ', $clockingDates);
+        $start = Carbon::createFromFormat('Y-m-d', $myArray[0]);
+        $end = Carbon::createFromFormat('Y-m-d', $myArray[1]);
+        $period = [];
+        
+        // If the 2 dates differ
+        if($start !== $end) {            
+            // Retrieve all the dates between and filter out the weekend ones
+            $date = $start;
+            while ($date <= $end) {
+                
+                if (! $date->isSunday()) {
+                    $period[] = $date->copy()->format('Y-m-d');
+                }
+                $date->addDays(1);
+            }
+        } else {
+            $period = $start;
+        }
+
         $validator = Validator::make(Input::all(), $rules);
 
         // Process validation
@@ -138,21 +171,23 @@ class UsersController extends Controller
                 ->withErrors($validator)
                 ->withInput(Input::all());
         } else {
-            // store
-            $clocking = new Clockings;
-            $clocking->user_id           = Input::get('user');
-            $clocking->user_role_id      = Input::get('user_role');
-            $clocking->department_id     = Input::get('department');
-            $clocking->function_id       = Input::get('function');
-            $clocking->clocking_type_id  = Input::get('clocking_type');
+            foreach($period as $key => $value) {
+                // store
+                $clocking = new Clockings;
+                $clocking->user_id           = Input::get('user');
+                $clocking->user_role_id      = Input::get('user_role');
+                $clocking->department_id     = Input::get('department');
+                $clocking->function_id       = Input::get('function');
+                $clocking->clocking_type_id  = Input::get('clocking_type');
 
-            $clocking->clocking_date     = Input::get('clocking_date');
-            $clocking->clocking_hours    = Input::get('clocking_hours');
-
-            $clocking->clocking_presence = Input::get('clocking_presence');
-            $clocking->clocking_overtime = Input::get('clocking_overtime');
-            $clocking->clocking_weekend  = Input::get('clocking_weekend');
-            $clocking->save();
+                $clocking->clocking_date     = $value;
+                $clocking->clocking_hours    = Input::get('clocking_hours');
+                
+                $clocking->clocking_presence = Input::get('clocking_presence');
+                $clocking->clocking_overtime = Input::get('clocking_overtime');
+                $clocking->clocking_weekend  = Input::get('clocking_weekend');
+                $clocking->save();
+            }
 
             // redirect
             Session::flash('message', 'Pontaj adăugat cu success!');
