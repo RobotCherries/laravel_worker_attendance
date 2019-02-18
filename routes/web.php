@@ -31,10 +31,6 @@ Route::prefix('panou')->group(function () {
     Route::get('/muncitori/adauga', 'UsersController@create')->name('panel_users_create');
     // Show
     Route::get('/muncitori/{id}', 'UsersController@show')->name('panel_users_show');
-    // Clocking
-    Route::get('/muncitori/{id}/pontare', 'UsersController@clockings')->name('panel_users_clockings');
-    Route::post('/muncitori/{id}/pontare', 'UsersController@clockings_store')->name('panel_users_clockings_store');
-    Route::delete('/muncitori/{id}/pontare/{clocking_id}/sterge', 'UsersController@clockings_destroy')->name('panel_users_clockings_delete');
     // Edit
     Route::get('/muncitori/{id}/modifica', 'UsersController@edit')->name('panel_users_edit');
     Route::get('/muncitori/{id}/modifica/functions/get/{department_id}', 'UsersController@getFunctions');
@@ -42,5 +38,9 @@ Route::prefix('panou')->group(function () {
     Route::put('/muncitori/{id}/actualizeaza', 'UsersController@update')->name('panel_users_update');
     // Delete
     Route::delete('/muncitori/{id}/sterge', 'UsersController@destroy')->name('panel_users_delete');
+    // Clocking
+    Route::get('/muncitori/{id}/pontare', 'ClockingsController@create')->name('panel_users_clockings');
+    Route::post('/muncitori/{id}/pontare', 'ClockingsController@store')->name('panel_users_clockings_store');
+    Route::delete('/muncitori/{id}/pontare/{clocking_id}/sterge', 'ClockingsController@destroy')->name('panel_users_clockings_delete');
 });
 Route::get('/setari', 'SettingsController@index')->name('settings');
